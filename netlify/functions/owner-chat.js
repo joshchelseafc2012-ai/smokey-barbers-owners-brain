@@ -156,12 +156,14 @@ Never mention AI, models, or APIs. You're a business thinking partner.`;
       headers: { "Content-Type": "application/x-ndjson" }
     });
   } catch (error) {
-    console.error("Chat error:", error);
+    console.error("Chat error:", error.message);
+    console.error("Error details:", error);
     return new Response(
       JSON.stringify({
-        reply: "Connection issue with the Owner Brain right now. Here's some immediate thinking:\n\nTo scale Smokey, focus on these unit economics:\n- Revenue per barber per day\n- Cost per location (rent, utilities, staff)\n- Gross margin after labor\n- Customer lifetime value\n\nGet clear on these numbers first. Everything else follows from solid unit economics."
+        error: error.message || "Unknown error",
+        reply: "Error connecting to Claude API. Check your API key."
       }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
 };
