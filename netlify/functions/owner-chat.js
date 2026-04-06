@@ -78,7 +78,7 @@ Never mention AI, models, or APIs. You're a business thinking partner.`;
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-3-opus-20250219',
+        model: 'claude-3-5-sonnet-latest',
         max_tokens: 1500,
         stream: true,
         system: systemPrompt,
