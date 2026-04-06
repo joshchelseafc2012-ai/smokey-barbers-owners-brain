@@ -2,18 +2,12 @@ import { useState, useRef, useEffect } from 'react'
 import TopBar from './TopBar'
 import ChatThread from './ChatThread'
 import Sidebar from './Sidebar'
+import RightSidebar from './RightSidebar'
 import MessageInput from './MessageInput'
 import '../styles/ChatInterface.css'
 
 export default function ChatInterface({ user, onLogout }) {
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      role: 'assistant',
-      content: 'Welcome to Owner Brain. I\'m here to help you make sharp business decisions for Smokey Barbers.\n\nWhat\'s on your mind? Growth strategy, unit economics, operational challenges, or something else?',
-      timestamp: new Date()
-    }
-  ])
+  const [messages, setMessages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const messagesEndRef = useRef(null)
@@ -118,7 +112,7 @@ export default function ChatInterface({ user, onLogout }) {
         <Sidebar onQuickAction={handleQuickAction} />
 
         <div className="chat-area">
-          <ChatThread messages={messages} isLoading={isLoading} />
+          <ChatThread messages={messages} isLoading={isLoading} onQuickAction={handleQuickAction} />
           <div ref={messagesEndRef} />
 
           {error && <div className="error-banner">{error}</div>}
@@ -129,6 +123,8 @@ export default function ChatInterface({ user, onLogout }) {
             placeholder="Ask me about strategy, operations, finance, marketing, or anything else..."
           />
         </div>
+
+        <RightSidebar />
       </div>
     </div>
   )

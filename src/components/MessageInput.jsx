@@ -32,18 +32,20 @@ export default function MessageInput({ onSendMessage, isLoading, placeholder }) 
 
   return (
     <form className="message-input" onSubmit={handleSubmit}>
-      <textarea
-        ref={textareaRef}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholder}
-        disabled={isLoading}
-        rows="1"
-      />
-      <button type="submit" disabled={isLoading || !input.trim()} className="send-btn">
-        Send
-      </button>
+      <div className="input-wrap">
+        <textarea
+          ref={textareaRef}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder}
+          disabled={isLoading}
+          rows="1"
+        />
+        <button type="submit" disabled={isLoading || !input.trim()} className="send-btn">
+          →
+        </button>
+      </div>
     </form>
   )
 }

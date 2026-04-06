@@ -1,27 +1,46 @@
+/* Input */
 .message-input {
+  padding: 14px 20px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
   display: flex;
   gap: 8px;
-  padding: 16px 28px;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  flex-shrink: 0;
+}
+
+.input-wrap {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 9px 10px 9px 16px;
+  transition: border-color 0.2s;
+  flex: 1;
+}
+
+.message-input:focus-within .input-wrap {
+  border-color: var(--gold-dim);
 }
 
 .message-input textarea {
   flex: 1;
-  padding: 10px 12px;
-  border-radius: 4px;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text-bright);
+  font-family: 'Barlow', sans-serif;
   font-size: 14px;
   resize: none;
+  min-height: 22px;
   max-height: 120px;
-  border: 1px solid var(--border);
-  transition: all 0.2s;
   line-height: 1.5;
 }
 
-.message-input textarea:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 2px rgba(201,168,76,0.1);
+.message-input textarea::placeholder {
+  color: var(--text-dim);
+  font-style: italic;
 }
 
 .message-input textarea:disabled {
@@ -29,32 +48,38 @@
   cursor: not-allowed;
 }
 
-.message-input textarea::placeholder {
-  color: var(--text-dim);
-}
-
 .send-btn {
-  padding: 10px 20px;
+  width: 36px;
+  height: 36px;
   background: var(--gold);
-  color: var(--void);
-  border-radius: 4px;
-  font-weight: 600;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: all 0.2s;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  align-self: flex-end;
-  min-width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  color: #0a0a0a;
+  font-weight: 600;
+  font-size: 16px;
 }
 
 .send-btn:hover:not(:disabled) {
-  background: #dab84f;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(201,168,76,0.3);
+  background: #d4b45a;
+  transform: translateY(-1px);
 }
 
 .send-btn:disabled {
-  opacity: 0.5;
+  opacity: 0.3;
   cursor: not-allowed;
+  transform: none;
+}
+
+.input-hint {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: center;
+  margin-top: 7px;
+  letter-spacing: 0.03em;
 }
