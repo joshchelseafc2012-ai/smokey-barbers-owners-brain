@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smokey Barbers — Owner Brain</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #070707;
+    --surface: #0f0f0f;
+    --panel: #141414;
+    --raised: #1a1a1a;
+    --card: #1e1e1e;
+    --border: #252525;
+    --border2: #333333;
+    --gold: #C9A84C;
+    --gold-dim: #7a5e25;
+    --gold-subtle: rgba(201,168,76,0.07);
+    --gold-border: rgba(201,168,76,0.2);
+    --text: #c8c8c8;
+    --text-dim: #646464;
+    --text-bright: #f0f0f0;
+    --green: #2ecc71;
+    --amber: #f39c12;
+    --red: #e74c3c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    background: var(--void);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    height: 58px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    flex-shrink: 0;
+    z-index: 50;
+  }
+
+  .topbar-left { display: flex; align-items: center; gap: 14px; }
+
+  .topbar-logo {
+    width: 34px; height: 34px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(201,168,76,0.2));
+  }
+
+  .topbar-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+
+  .topbar-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: var(--raised);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+
+  .owner-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 14px 5px 6px;
+    background: var(--raised);
+    border: 1px solid var(--gold-border);
+    border-radius: 24px;
+  }
+  .owner-av {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    color: #0a0a0a;
+  }
+  .owner-name { font-size: 13px; font-weight: 500; color: var(--gold); }
+
+  /* ── LAYOUT ── */
+  .app-body {
+    display: grid;
+    grid-template-columns: 240px 1fr 260px;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── LEFT SIDEBAR ── */
+  .sidebar-left {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 20px 0;
+  }
+
+  .sidebar-left::-webkit-scrollbar { width: 3px; }
+  .sidebar-left::-webkit-scrollbar-thumb { background: var(--border); }
+
+  .sb-section { padding: 0 16px; margin-bottom: 28px; }
+
+  .sb-heading {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    padding: 0 4px;
+  }
+
+  .sb-btn {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    padding: 9px 10px;
+    background: none;
+    border: none;
+    border-radius: 7px;
+    color: var(--text-dim);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    margin-bottom: 2px;
+  }
+  .sb-btn:hover { background: var(--raised); color: var(--text); }
+  .sb-btn.active { background: var(--gold-subtle); color: var(--gold); border: 1px solid var(--gold-border); }
+  .sb-btn .ico { font-size: 15px; width: 18px; text-align: center; }
+
+  .sb-divider { height: 1px; background: var(--border); margin: 4px 16px 20px; }
+
+  /* Stat widgets in sidebar */
+  .stat-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 8px;
+  }
+  .stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+  .stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.05em;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  .stat-sub { font-size: 11px; color: var(--text-dim); }
+  .stat-up { color: var(--green); }
+  .stat-down { color: var(--red); }
+
+  /* Location status */
+  .loc-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
+  .loc-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .loc-dot.green { background: var(--green); animation: pulse 2.5s infinite; }
+  .loc-dot.amber { background: var(--amber); }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+  .loc-name { flex: 1; color: var(--text); font-weight: 500; font-size: 12px; }
+  .loc-status { font-size: 10px; color: var(--text-dim); }
+
+  /* ── MAIN CHAT ── */
+  .chat-main {
+    display: flex;
+    flex-direction: column;
+    background: var(--void);
+    overflow: hidden;
+  }
+
+  /* Welcome */
+  #welcome {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+  }
+
+  .welcome-logo {
+    width: 60px; height: 60px;
+    object-fit: contain;
+    margin-bottom: 20px;
+    opacity: 0.5;
+    filter: drop-shadow(0 0 16px rgba(201,168,76,0.2));
+  }
+
+  .welcome-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .welcome-sub {
+    font-size: 14px;
+    color: var(--text-dim);
+    max-width: 380px;
+    line-height: 1.65;
+    margin-bottom: 32px;
+  }
+
+  .prompt-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .prompt-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 14px 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .prompt-card:hover {
+    border-color: var(--gold-dim);
+    background: var(--gold-subtle);
+    transform: translateY(-1px);
+  }
+  .prompt-card .pc-icon { font-size: 18px; margin-bottom: 7px; }
+  .prompt-card .pc-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-bright);
+    letter-spacing: 0.04em;
+    margin-bottom: 3px;
+  }
+  .prompt-card .pc-desc { font-size: 11px; color: var(--text-dim); line-height: 1.4; }
+
+  /* Messages */
+  #messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 28px;
+    display: none;
+    flex-direction: column;
+    gap: 18px;
+    scroll-behavior: smooth;
+  }
+  #messages::-webkit-scrollbar { width: 3px; }
+  #messages::-webkit-scrollbar-thumb { background: var(--border); }
+
+  .msg { display: flex; flex-direction: column; animation: msg-in 0.25s ease; }
+  @keyframes msg-in { from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);} }
+
+  .msg-owner { align-items: flex-end; }
+  .msg-brain { align-items: flex-start; }
+
+  .msg-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .msg-owner .msg-label { color: rgba(201,168,76,0.45); }
+  .msg-brain .msg-label { color: var(--gold-dim); }
+
+  .bubble {
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 76%;
+  }
+  .bubble-owner {
+    background: var(--raised);
+    border: 1px solid var(--border2);
+    border-bottom-right-radius: 3px;
+    color: var(--text-bright);
+  }
+  .bubble-brain {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 3px;
+    color: var(--text);
+  }
+  .bubble-brain strong { color: var(--gold); font-weight: 600; }
+  .bubble-brain em { color: #90afc8; }
+  .bubble-brain h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 14px 0 6px;
+  }
+  .bubble-brain ul { margin: 6px 0 6px 18px; }
+  .bubble-brain li { margin-bottom: 4px; }
+
+  /* Typing */
+  .typing-dots {
+    display: flex; gap: 4px;
+    padding: 12px 16px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    border-bottom-left-radius: 3px;
+    width: fit-content;
+  }
+  .td {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--gold-dim);
+    animation: tdp 1.2s ease-in-out infinite;
+  }
+  .td:nth-child(2){animation-delay:.16s;}
+  .td:nth-child(3){animation-delay:.32s;}
+  @keyframes tdp{0%,80%,100%{transform:scale(0.7);opacity:0.4;}40%{transform:scale(1.1);opacity:1;}}
+
+  /* Input */
+  .input-bar {
+    padding: 14px 20px 16px;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    flex-shrink: 0;
+  }
+
+  .input-wrap {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 9px 10px 9px 16px;
+    transition: border-color 0.2s;
+  }
+  .input-wrap:focus-within { border-color: var(--gold-dim); }
+
+  #chat-input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text-bright);
+    font-family: 'Barlow', sans-serif;
+    font-size: 14px;
+    resize: none;
+    min-height: 22px;
+    max-height: 120px;
+    line-height: 1.5;
+  }
+  #chat-input::placeholder { color: var(--text-dim); font-style: italic; }
+
+  #send-btn {
+    width: 36px; height: 36px;
+    background: var(--gold);
+    border: none; border-radius: 8px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  #send-btn:hover { background: #d4b45a; transform: translateY(-1px); }
+  #send-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+  #send-btn svg { width: 15px; height: 15px; fill: #0a0a0a; }
+
+  .input-hint {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: center;
+    margin-top: 7px;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── RIGHT SIDEBAR — CONTEXT ── */
+  .sidebar-right {
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .sidebar-right::-webkit-scrollbar { width: 3px; }
+
+  .ctx-section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+
+  .ctx-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 8px;
+  }
+  .ctx-card-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 6px;
+  }
+  .ctx-card-body {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.55;
+  }
+
+  .priority-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .priority-item:last-child { border-bottom: none; }
+  .priority-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+  .p-high { background: var(--red); }
+  .p-med { background: var(--amber); }
+  .p-low { background: var(--green); }
+  .priority-text { color: var(--text-dim); line-height: 1.4; }
+  .priority-text strong { color: var(--text); font-weight: 500; }
+
+  .quick-action {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 9px 12px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--text-dim);
+    font-family: 'Barlow', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    margin-bottom: 6px;
+  }
+  .quick-action:hover { border-color: var(--gold-dim); color: var(--gold); background: var(--gold-subtle); }
+  .quick-action .qa-icon { font-size: 14px; }
+
+  /* Mobile */
+  @media (max-width: 900px) {
+    .app-body { grid-template-columns: 1fr; }
+    .sidebar-left, .sidebar-right { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── TOPBAR ── -->
+<div class="topbar">
+  <div class="topbar-left">
+    <img class="topbar-logo" src="data:image/jpeg;base64,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" alt="Smokey Barbers" />
+    <div class="topbar-name">Owner Brain</div>
+    <div class="topbar-badge">Smokey Barbers · Private</div>
+  </div>
+  <div class="topbar-right">
+    <div class="owner-pill">
+      <div class="owner-av">SB</div>
+      <div class="owner-name">Smokey</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── BODY ── -->
+<div class="app-body">
+
+  <!-- LEFT SIDEBAR -->
+  <div class="sidebar-left">
+
+    <div class="sb-section">
+      <div class="sb-heading">Command</div>
+      <button class="sb-btn active" onclick="newChat()">
+        <span class="ico">✦</span> New Session
+      </button>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <div class="sb-section">
+      <div class="sb-heading">Operations</div>
+      <button class="sb-btn" onclick="fire('Give me a summary of what I should be focused on this week across all locations')">
+        <span class="ico">📋</span> Weekly Focus
+      </button>
+      <button class="sb-btn" onclick="fire('What are the most common operational issues across multi-location barbershops and how should I be addressing them?')">
+        <span class="ico">⚙️</span> Multi-Site Ops
+      </button>
+      <button class="sb-btn" onclick="fire('Walk me through how to build a KPI dashboard for my barbershop chain')">
+        <span class="ico">📊</span> KPIs & Metrics
+      </button>
+      <button class="sb-btn" onclick="fire('How should I structure my management team as I scale beyond 4 locations?')">
+        <span class="ico">👥</span> Team Structure
+      </button>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <div class="sb-section">
+      <div class="sb-heading">Growth</div>
+      <button class="sb-btn" onclick="fire('What should my new location checklist include before opening?')">
+        <span class="ico">📍</span> New Location
+      </button>
+      <button class="sb-btn" onclick="fire('How do I increase average spend per client across my shops?')">
+        <span class="ico">💰</span> Revenue Growth
+      </button>
+      <button class="sb-btn" onclick="fire('Help me think through a loyalty programme for Smokey Barbers')">
+        <span class="ico">⭐</span> Loyalty Scheme
+      </button>
+      <button class="sb-btn" onclick="fire('What marketing channels work best for barbershop chains and what should I prioritise?')">
+        <span class="ico">📣</span> Marketing
+      </button>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <div class="sb-section">
+      <div class="sb-heading">Live Locations</div>
+      <div class="loc-item">
+        <div class="loc-dot green"></div>
+        <div class="loc-name">Leeds</div>
+        <div class="loc-status">Open</div>
+      </div>
+      <div class="loc-item">
+        <div class="loc-dot green"></div>
+        <div class="loc-name">Manchester</div>
+        <div class="loc-status">Open</div>
+      </div>
+      <div class="loc-item">
+        <div class="loc-dot green"></div>
+        <div class="loc-name">Birmingham</div>
+        <div class="loc-status">Open</div>
+      </div>
+      <div class="loc-item">
+        <div class="loc-dot amber"></div>
+        <div class="loc-name">London</div>
+        <div class="loc-status">Late open</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MAIN CHAT -->
+  <div class="chat-main">
+
+    <!-- Welcome -->
+    <div id="welcome">
+      <img class="welcome-logo" src="data:image/jpeg;base64,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" alt="logo" />
+      <div class="welcome-title">Good to see you, Smokey.</div>
+      <div class="welcome-sub">Your Owner Brain is ready. Ask it anything about running, growing and scaling your chain — or pick a topic below.</div>
+      <div class="prompt-grid">
+        <div class="prompt-card" onclick="fire('What should I be focused on this week to move the business forward?')">
+          <div class="pc-icon">🎯</div>
+          <div class="pc-title">Weekly Priorities</div>
+          <div class="pc-desc">What deserves your attention right now</div>
+        </div>
+        <div class="prompt-card" onclick="fire('I am thinking about opening a 5th location. Walk me through how to evaluate if it is the right move and what I need to have in place first')">
+          <div class="pc-icon">📍</div>
+          <div class="pc-title">New Location</div>
+          <div class="pc-desc">Evaluate and plan your next site</div>
+        </div>
+        <div class="prompt-card" onclick="fire('How do I make sure all four of my locations are delivering a consistent Smokey Barbers experience without me being in every shop?')">
+          <div class="pc-icon">⚙️</div>
+          <div class="pc-title">Consistency at Scale</div>
+          <div class="pc-desc">Standards across every location</div>
+        </div>
+        <div class="prompt-card" onclick="fire('What are the highest leverage things I can do right now to increase revenue across my shops without significant new investment?')">
+          <div class="pc-icon">📈</div>
+          <div class="pc-title">Revenue Levers</div>
+          <div class="pc-desc">High-impact, low-effort growth moves</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div id="messages"></div>
+
+    <!-- Input -->
+    <div class="input-bar">
+      <div class="input-wrap">
+        <textarea id="chat-input" placeholder="Ask anything about running and growing Smokey Barbers…" rows="1"
+          onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        <button id="send-btn" onclick="sendMessage()">
+          <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+        </button>
+      </div>
+      <div class="input-hint">Owner Brain · Smokey Barbers · Powered by Josh AI Systems</div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="sidebar-right">
+
+    <div>
+      <div class="ctx-section-title">Business Snapshot</div>
+      <div class="stat-card">
+        <div class="stat-label">Active Locations</div>
+        <div class="stat-value">4</div>
+        <div class="stat-sub">Leeds · Manchester · Birmingham · London</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Staff Headcount</div>
+        <div class="stat-value">~24</div>
+        <div class="stat-sub">Across all sites</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Chain Status</div>
+        <div class="stat-value" style="font-size:20px;padding-top:2px;">Scaling</div>
+        <div class="stat-sub stat-up">↑ Growth phase</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="ctx-section-title">Open Priorities</div>
+      <div class="ctx-card">
+        <div class="priority-item">
+          <div class="priority-dot p-high"></div>
+          <div class="priority-text"><strong>Staff retention</strong> — reduce turnover at high-churn locations</div>
+        </div>
+        <div class="priority-item">
+          <div class="priority-dot p-high"></div>
+          <div class="priority-text"><strong>Consistency audit</strong> — ensure brand standards match across all 4 sites</div>
+        </div>
+        <div class="priority-item">
+          <div class="priority-dot p-med"></div>
+          <div class="priority-text"><strong>Loyalty programme</strong> — design and launch across the chain</div>
+        </div>
+        <div class="priority-item">
+          <div class="priority-dot p-med"></div>
+          <div class="priority-text"><strong>Location 5</strong> — site selection and feasibility</div>
+        </div>
+        <div class="priority-item">
+          <div class="priority-dot p-low"></div>
+          <div class="priority-text"><strong>Product retail</strong> — increase in-shop product revenue</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="ctx-section-title">Quick Actions</div>
+      <button class="quick-action" onclick="fire('Draft a message to all my shop managers about this week\'s priorities')">
+        <span class="qa-icon">✉️</span> Draft manager comms
+      </button>
+      <button class="quick-action" onclick="fire('Give me a staff retention framework I can implement across all locations this month')">
+        <span class="qa-icon">👥</span> Staff retention plan
+      </button>
+      <button class="quick-action" onclick="fire('What KPIs should I be tracking weekly across my barbershop chain?')">
+        <span class="qa-icon">📊</span> KPI framework
+      </button>
+      <button class="quick-action" onclick="fire('Help me think through a product retail strategy to increase revenue per client')">
+        <span class="qa-icon">💰</span> Retail revenue
+      </button>
+      <button class="quick-action" onclick="fire('What should I look for when evaluating a new barbershop location?')">
+        <span class="qa-icon">📍</span> Site evaluation
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+const SYSTEM_PROMPT = `You are the Smokey Barbers Owner Brain — a private, high-level strategic and operational AI built exclusively for the owner of Smokey Barbers, a premium multi-location barbershop chain across the UK.
+
+You are not a generic business assistant. You are specifically tuned to the context of owning and scaling a barbershop chain — the day-to-day realities, the growth decisions, the people challenges and the brand considerations that come with running multiple premium shops.
+
+**About the business:**
+Smokey Barbers is a premium UK barbershop chain with 4 locations — Leeds City Centre, Manchester, Birmingham and London Shoreditch. The brand is bold and distinctive, known for quality cuts, strong culture and the iconic gold gas mask identity. The owner is actively growing the chain.
+
+**You are the owner's thinking partner. You help with:**
+
+**Operations & Management**
+- Multi-location consistency — maintaining brand standards across every site
+- Shop manager relationships, accountability and structure
+- Daily/weekly operational rhythms that don't require the owner to be everywhere
+- Hiring, onboarding and retaining great barbers
+- Staff incentive structures, culture building, reducing churn
+- KPIs and metrics worth tracking at shop and chain level
+
+**Strategy & Growth**
+- New location evaluation — what to look for, what to avoid
+- Revenue growth levers: service pricing, upsells, retail products, memberships
+- Loyalty programmes and retention mechanics
+- Partnership and collaboration opportunities
+- Competitive positioning and brand differentiation
+
+**Finance & Commercial**
+- Profitability per chair, per location
+- Cost structures to watch in barbershop operations
+- Pricing strategy — when and how to increase prices
+- Understanding the unit economics of a barbershop chain
+
+**Marketing & Brand**
+- Social media strategy that fits a premium barbershop brand
+- Local marketing vs chain-wide campaigns
+- Influencer and community partnerships
+- How to leverage the brand identity (the gas mask, the gold, the attitude)
+
+**Decision Support**
+- Thinking through big decisions before acting
+- Drafting communications to managers, staff or partners
+- Evaluating options with clear trade-off analysis
+- Pressure-testing plans before they go live
+
+**Tone:** You speak to the owner as a trusted advisor — direct, sharp, commercially literate. No fluff. No generic business-book advice. You give real, specific, actionable thinking. When you need to recommend something, recommend it. When you see a risk, name it. When there's a better way, say so.
+
+You are private — this conversation is never seen by staff or clients. The owner can be candid and you respond in kind.
+
+End your responses with a **Next move:** — one specific, concrete action the owner could take on this today or this week.`;
+
+let history = [];
+let busy = false;
+
+function newChat() {
+  history = [];
+  const msgs = document.getElementById('messages');
+  msgs.innerHTML = '';
+  msgs.style.display = 'none';
+  document.getElementById('welcome').style.display = 'flex';
+}
+
+function showChat() {
+  document.getElementById('welcome').style.display = 'none';
+  const msgs = document.getElementById('messages');
+  msgs.style.display = 'flex';
+}
+
+function fire(text) {
+  showChat();
+  document.getElementById('chat-input').value = text;
+  sendMessage();
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function fmt(t) {
+  return t
+    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g,'<em>$1</em>')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,'<h3>$1</h3>')
+    .replace(/\n\n/g,'<br><br>')
+    .replace(/\n/g,'<br>');
+}
+
+function addMsg(role, text) {
+  showChat();
+  const msgs = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = `msg msg-${role}`;
+  const label = document.createElement('div');
+  label.className = 'msg-label';
+  label.textContent = role === 'owner' ? '— you' : '◈ owner brain';
+  const bubble = document.createElement('div');
+  bubble.className = `bubble bubble-${role}`;
+  if (role === 'brain') bubble.innerHTML = fmt(text);
+  else bubble.textContent = text;
+  div.appendChild(label);
+  div.appendChild(bubble);
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping() {
+  const msgs = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'msg msg-brain';
+  div.id = 'typing';
+  const label = document.createElement('div');
+  label.className = 'msg-label';
+  label.textContent = '◈ owner brain';
+  const dots = document.createElement('div');
+  dots.className = 'typing-dots';
+  dots.innerHTML = '<div class="td"></div><div class="td"></div><div class="td"></div>';
+  div.appendChild(label);
+  div.appendChild(dots);
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+async function sendMessage() {
+  if (busy) return;
+  const input = document.getElementById('chat-input');
+  const btn = document.getElementById('send-btn');
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  addMsg('owner', text);
+  history.push({ role: 'user', content: text });
+
+  busy = true;
+  btn.disabled = true;
+  showTyping();
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: history
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.find(b => b.type === 'text')?.text || 'Something went wrong. Please try again.';
+    history.push({ role: 'assistant', content: reply });
+    removeTyping();
+    addMsg('brain', reply);
+  } catch {
+    removeTyping();
+    addMsg('brain', 'Connection issue — please check your network and try again.');
+  }
+
+  busy = false;
+  btn.disabled = false;
+  input.focus();
+}
+</script>
+</body>
+</html>

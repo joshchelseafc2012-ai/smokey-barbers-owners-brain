@@ -1,0 +1,32 @@
+.chat-interface {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--void);
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  gap: 0;
+  overflow: hidden;
+}
+
+.chat-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.error-banner {
+  background: rgba(231, 76, 60, 0.1);
+  border-top: 1px solid var(--red);
+  border-bottom: 1px solid var(--red);
+  color: #ff8080;
+  padding: 12px 20px;
+  font-size: 13px;
+  text-align: center;
+}
