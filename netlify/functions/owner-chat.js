@@ -16,7 +16,11 @@ export default async (req, context) => {
     // Get API key from environment
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
-      throw new Error("Anthropic API key not configured");
+      console.error('ANTHROPIC_API_KEY not found in environment');
+      return new Response(
+        JSON.stringify({ error: "API key not configured. Contact admin." }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
+      );
     }
 
     // Owner Brain system prompt - strategic business advisor
